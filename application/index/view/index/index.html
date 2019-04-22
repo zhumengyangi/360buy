@@ -1,6 +1,5 @@
 {extend name="home"}
 {block name="title"}京西商城首页{/block}
-
 {block name="header"}
 <!-- 头部 start -->
 <div class="header w1210 bc mt15">
@@ -101,27 +100,27 @@
             </div>
 
             <div class="cat_bd">
+                {if(!empty($category))}
+                    {foreach $category as $cate}
+                    <div class="cat">
+                        <h3><a href="">{$cate.cate_name}</a><b></b></h3>
 
-                {foreach $category as $cate}
-                <div class="cat">
-                    <h3><a href="">{$cate.cate_name}</a><b></b></h3>
+                        <div class="cat_detail">
+                            {if condition="isset($cate['son'])"}
+                            <dl>
+                                <dd>
+                                    {foreach $cate['son'] as $c}
+                                    <a href="">{$c.cate_name}</a>
+                                    {/foreach}
+                                </dd>
+                            </dl>
+                            {/if}
+                        </div>
 
-                    <div class="cat_detail">
-                        {if condition="isset($cate['son'])"}
-                        <dl>
-                            <dd>
-                                {foreach $cate['son'] as $c}
-                                <a href="">{$c.cate_name}</a>
-                                {/foreach}
-                            </dd>
-                        </dl>
-                        {/if}
+
                     </div>
-
-
-                </div>
-                {/foreach}
-
+                    {/foreach}
+                {/if}
             </div>
 
         </div>
@@ -153,17 +152,20 @@
         <div class="area">
             <div class="slide_items">
                 <ul>
-                    {foreach $banner as $bann}
-                    <li><a href="{$bann.ad_link}" title="{$bann.ad_name}"><img src="{$bann.image_url}" alt="" /></a></li>
-                    {/foreach}
-
+                    {if(!empty($banner))}
+                        {foreach $banner as $bann}
+                        <li><a href="{$bann.ad_link}" title="{$bann.ad_name}"><img src="{$bann.image_url}" alt="" /></a></li>
+                        {/foreach}
+                    {/if}
                 </ul>
             </div>
             <div class="slide_controls">
                 <ul>
+                    {if(!empty($banner))}
                     {foreach $banner as $key => $bann}
                     <li {if condition="$key==0"} class="on"  {/if}>{$key+1}</li>
                     {/foreach}
+                    {/if}
                 </ul>
             </div>
         </div>
@@ -173,10 +175,11 @@
     <!-- 快报区域 start-->
     <div class="coll_right fl ml10">
         <div class="ad">
-            {foreach $home_top as  $top}
-            <a href="" title="{$top.ad_name}"><img src="{$top.image_url}" alt="" /></a>
-            {/foreach}
-
+            {if(!empty($home_top))}
+                {foreach $home_top as  $top}
+                <a href="" title="{$top.ad_name}"><img src="{$top.image_url}" alt="" /></a>
+                {/foreach}
+            {/if}
         </div>
 
         <div class="news mt10">
@@ -217,15 +220,17 @@
             <!-- 热卖商品 start -->
             <div class="hot">
                 <ul>
-                    {foreach $hot as $h}
-                    <li>
-                        <dl>
-                            <dt><a href="/detail/index?id={$h.id}"><img src="{$h.image_url}" alt="" /></a></dt>
-                            <dd><a href="/detail/index?id={$h.id}">{$h.goods_name}</a></dd>
-                            <dd><span>售价：</span><strong> ￥{$h.market_price}</strong></dd>
-                        </dl>
-                    </li>
-                    {/foreach}
+                    {if(!empty($hot))}
+                        {foreach $hot as $h}
+                        <li>
+                            <dl>
+                                <dt><a href="/detail/index?id={$h.id}"><img src="{$h.image_url}" alt="" /></a></dt>
+                                <dd><a href="/detail/index?id={$h.id}">{$h.goods_name}</a></dd>
+                                <dd><span>售价：</span><strong> ￥{$h.market_price}</strong></dd>
+                            </dl>
+                        </li>
+                        {/foreach}
+                    {/if}
                 </ul>
             </div>
             <!-- 热卖商品 end -->
@@ -233,15 +238,17 @@
             <!-- 推荐商品 atart -->
             <div class="recommend none">
                 <ul>
-                    {foreach $recommand as $r}
-                    <li>
-                        <dl>
-                            <dt><a href="/detail/index?id={$r.id}"><img src="{$r.image_url}" alt="" /></a></dt>
-                            <dd><a href="/detail/index?id={$r.id}">{$r.goods_name}</a></dd>
-                            <dd><span>售价：</span><strong> ￥{$r.market_price}</strong></dd>
-                        </dl>
-                    </li>
-                    {/foreach}
+                    {if(!empty($recommand))}
+                        {foreach $recommand as $r}
+                        <li>
+                            <dl>
+                                <dt><a href="/detail/index?id={$r.id}"><img src="{$r.image_url}" alt="" /></a></dt>
+                                <dd><a href="/detail/index?id={$r.id}">{$r.goods_name}</a></dd>
+                                <dd><span>售价：</span><strong> ￥{$r.market_price}</strong></dd>
+                            </dl>
+                        </li>
+                        {/foreach}
+                    {/if}
                 </ul>
             </div>
             <!-- 推荐商品 end -->
@@ -249,15 +256,17 @@
             <!-- 新品上架 start-->
             <div class="new none">
                 <ul>
-                    {foreach $news as $n}
-                    <li>
-                        <dl>
-                            <dt><a href="/detail/index?id={$n.id}"><img src="{$n.image_url}" alt="" /></a></dt>
-                            <dd><a href="/detail/index?id={$n.id}">{$n.goods_name}</a></dd>
-                            <dd><span>售价：</span><strong> ￥{$n.market_price}</strong></dd>
-                        </dl>
-                    </li>
-                    {/foreach}
+                    {if(!empty($hot))}
+                        {foreach $news as $n}
+                        <li>
+                            <dl>
+                                <dt><a href="/detail/index?id={$n.id}"><img src="{$n.image_url}" alt="" /></a></dt>
+                                <dd><a href="/detail/index?id={$n.id}">{$n.goods_name}</a></dd>
+                                <dd><span>售价：</span><strong> ￥{$n.market_price}</strong></dd>
+                            </dl>
+                        </li>
+                        {/foreach}
+                    {/if}
                 </ul>
             </div>
             <!-- 新品上架 end-->
@@ -479,10 +488,11 @@
             <h2><a href="">更多品牌&nbsp;></a><strong>品牌旗舰店</strong></h2>
             <div class="sidebar_wrap">
                 <ul>
-                    {foreach $brands as $b}
-                    <li style="line-height: 35px;text-align: center;font-size: 16px; "><a href="/goods/list"><b>{$b.brand_name}</b></a></li>
-                    {/foreach}
-
+                    {if(!empty($brands))}
+                        {foreach $brands as $b}
+                        <li style="line-height: 35px;text-align: center;font-size: 16px; "><a href="/goods/list"><b>{$b.brand_name}</b></a></li>
+                        {/foreach}
+                    {/if}
                 </ul>
             </div>
         </div>
@@ -493,9 +503,11 @@
             <h2><strong>分类资讯</strong></h2>
             <div class="sidebar_wrap">
                 <ul>
-                    {foreach $articles as $a}
-                    <li><a href="/article/detail?id={$a.id}"><b>.</b>{$a.title}</a></li>
-                    {/foreach}
+                    {if(!empty($articles))}
+                        {foreach $articles as $a}
+                        <li><a href="/article/detail?id={$a.id}"><b>.</b>{$a.title}</a></li>
+                        {/foreach}
+                    {/if}
                 </ul>
             </div>
 
@@ -504,9 +516,11 @@
 
         <!-- 广告 start -->
         <div class="ads mt10">
-            {foreach $homt_bottom as  $bottom}
-            <a href="" title="{$bottom.ad_name}"><img src="{$bottom.image_url}" alt="" /></a>
-            {/foreach}
+            {if(!empty($homt_bottom))}
+                {foreach $homt_bottom as  $bottom}
+                <a href="" title="{$bottom.ad_name}"><img src="{$bottom.image_url}" alt="" /></a>
+                {/foreach}
+            {/if}
         </div>
         <!-- 广告 end -->
     </div>

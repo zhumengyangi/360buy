@@ -241,5 +241,5 @@ return [
         'list_rows' => 15,
     ],
     //  接口的域名
-    'api_url'   => 'http://test.laravel_web.com'
+    'api_url'   => 'http://laravel_web'
 ];

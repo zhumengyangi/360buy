@@ -28,7 +28,7 @@
         curl_setopt($curl, CURLOPT_URL,$url);
 
         //  设置文件流形式返回抓取的数据
-        curl_setopt($curl, CURLOPT_RETURNRANSFER,1);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER,1);
 
         if($method == "post"){
 
@@ -36,12 +36,14 @@
             curl_setopt($curl, CURLOPT_POST, true);
 
             //  传递post请求的数据
-            curl_setopt($curl, CURLOPT_POSTFILEDS, $data);
+            curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
 
         }
 
         //  执行curl操作
         $output = curl_exec($curl);
+
+
 
         //  关闭释放curl资源
         curl_close($curl);
