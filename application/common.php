@@ -44,7 +44,6 @@
         $output = curl_exec($curl);
 
 
-
         //  关闭释放curl资源
         curl_close($curl);
 

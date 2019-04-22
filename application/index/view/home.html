@@ -13,28 +13,87 @@
     <script type="text/javascript" src="/js/jquery-1.8.3.min.js"></script>
     <script type="text/javascript" src="/js/header.js"></script>
     <script type="text/javascript" src="/js/index.js"></script>
-    <script type="text/javascript" src="/js/vue.js"></script>
+
 </head>
 <body>
 
 <!-- 顶部导航 start -->
-<div class="topnav">
+<div class="topnav" id="top">
     <div class="topnav_bd w1210 bc">
         <div class="topnav_left">
 
         </div>
         <div class="topnav_right fr">
             <ul>
-                <li>您好，欢迎来到京西！[<a href="login.html">登录</a>] [<a href="/index/login/register">免费注册</a>] </li>
-                <li class="line">|</li>
-                <li>我的订单</li>
-                <li class="line">|</li>
-                <li>客户服务</li>
+                <li>您好，{{username}} 欢迎来到京西！<span v-if="isLogin == false">
+					[<a href="/index/login/login">登录</a>] [<a href="/index/login/register">免费注册</a>]</span> </li>
+                <li v-if="isLogin" class="line">|</li>
+                <li v-if="isLogin">我的订单</li>
+                <li v-if="isLogin" class="line">|</li>
+                <li v-if="isLogin"  @click="logout">退出</li>
 
             </ul>
         </div>
     </div>
 </div>
+
+
+<script type="text/javascript" src="/js/vue.js"></script>
+<script type="text/javascript">
+
+    var top1 = new Vue({
+        el:"#top",
+        data: {
+            isLogin: false,
+            username: '',
+        },
+        created:function() {
+            this.check_token();
+        },
+        methods:{
+            check_token: function(){
+                var token =window.localStorage.getItem('360_token');
+                var that = this;
+
+                $.ajax({
+                    url: "http://test.laravel_web.com/api/token",
+                    type: "post",
+                    data: {token:token},
+                    dataType: "json",
+                    success: function(res){
+
+                        if(res.code == 2000){
+                            that.username = res.data.username || res.data.phone;
+                            that.isLogin = true;
+                        }
+
+                    }
+                })
+            },
+            //调用退出的接口
+            logout: function (){
+                var token =window.localStorage.getItem('360_token');
+                var that = this;
+
+                $.ajax({
+                    url: "http://test.laravel_web.com/api/logout",
+                    type: "post",
+                    data: {token:token},
+                    dataType: "json",
+                    success: function(res){
+
+                        if(res.code == 2000){
+                            window.localStorage.removeItem('360_token');
+                            window.location.href="/index/login/login";
+                        }
+
+                    }
+                })
+            }
+        }
+
+    })
+</script>
 <!-- 顶部导航 end -->
 
 <div style="clear:both;"></div>
