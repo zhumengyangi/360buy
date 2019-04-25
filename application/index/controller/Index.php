@@ -14,7 +14,6 @@ class Index extends Controller
 
         //  请求接口的域名地址
         $url = config('api_url');
-//        echo $url;exit;
 
         //  请求首页的分类接口
         $category = httpCurl($url."/api/home/category","post");
@@ -56,7 +55,9 @@ class Index extends Controller
         ]);
 
 
+        //  返回
         return $this->fetch('index');
+
     }
 
 

@@ -25,13 +25,12 @@
         </div>
         <div class="topnav_right fr">
             <ul>
-                <li>您好，{{username}} 欢迎来到京西！<span v-if="isLogin == false">
-					[<a href="/index/login/login">登录</a>] [<a href="/index/login/register">免费注册</a>]</span> </li>
-                <li v-if="isLogin" class="line">|</li>
-                <li v-if="isLogin">我的订单</li>
-                <li v-if="isLogin" class="line">|</li>
-                <li v-if="isLogin"  @click="logout">退出</li>
-
+                <li>您好, {if condition="!empty($userinfo)"} {$userinfo.username} {/if} 欢迎来到京西！{if condition="empty($userinfo)"}<span >
+                [<a href="/index/login/login">登录</a>] [<a href="/index/login/register">免费注册</a>]</span> {/if}</li>
+                {if condition="!empty($userinfo)"}
+                <li class="line">|</li>
+                <li ><a href="/index/login/logout">退出</a></li>
+                {/if}
             </ul>
         </div>
     </div>
@@ -56,7 +55,7 @@
                 var that = this;
 
                 $.ajax({
-                    url: "http://test.laravel_web.com/api/token",
+                    url: "http://laravel_web/api/token",
                     type: "post",
                     data: {token:token},
                     dataType: "json",
@@ -76,7 +75,7 @@
                 var that = this;
 
                 $.ajax({
-                    url: "http://test.laravel_web.com/api/logout",
+                    url: "http://laravel_web/api/logout",
                     type: "post",
                     data: {token:token},
                     dataType: "json",

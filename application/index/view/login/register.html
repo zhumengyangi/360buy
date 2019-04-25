@@ -15,168 +15,168 @@
         border-radius: 4px;
     }
     .disabled{
-        background-color: #e7e7e7; 
+        background-color: #e7e7e7;
         color: black;
     }
 </style>
 <div class="login w990 bc mt10 regist">
-        <div class="login_hd">
-            <h2>用户注册</h2>
-            <b></b>
-        </div>
-        <div class="login_bd">
-            <div class="login_form fl" id="register">
-                <form action="" method="post" onsubmit="return false;">
-                    <ul>
-                        <li>
-                            <label for="">手机号：</label>
-                            <input type="text" class="txt" name="phone" />
-                            <p>11位数的手机号</p>
-                        </li>
-                        <li>
-                            <label for="">密码：</label>
-                            <input type="password" class="txt" name="password" />
-                            <p>6-20位字符，可使用字母、数字和符号的组合，不建议使用纯数字、纯字母、纯符号</p>
-                        </li>
-                        <li>
-                            <label for="">确认密码：</label>
-                            <input type="password" class="txt" name="confirm_password" />
-                            <p> <span>请再次输入密码</p>
-                        </li>
-                        <li class="checkcode">
-                            <label for="">验证码：</label>
-                            <input type="text"  name="code" />
-                            <button :class="class1"  @click="countDown" :disabled="disabled">{{content}}</button>
-                        </li>
-
-                        <li class="checkcode">
-                            <label for="">邀请码：</label>
-                            <input type="text"  name="invite_code" />
-                        </li>
-                        <li>
-                            <label for="">&nbsp;</label>
-                            <input type="checkbox" class="chb" checked="checked" /> 我已阅读并同意《用户注册协议》
-                        </li>
-                        <li>
-                            <label for="">&nbsp;</label>
-                            <input type="submit" value="" class="login_btn" @click="register"/>
-                        </li>
-                    </ul>
-                </form>
-
-                
-            </div>
-            
-
-
-        </div>
+    <div class="login_hd">
+        <h2>用户注册</h2>
+        <b></b>
     </div>
-    <script type="text/javascript" src="/js/vue.js"></script>
-    <script type="text/javascript">
-        var register = new Vue({
-            el: "#register",
-            data: {
-                totalTime:60,
-                content: "发送验证码",
-                disabled: false,
-                class1: "button",
-            },
-            methods:{
-                //减少+发送短信验证码
-                countDown() {
+    <div class="login_bd">
+        <div class="login_form fl" id="register">
+            <form action="" method="post" onsubmit="return false;">
+                <ul>
+                    <li>
+                        <label for="">手机号：</label>
+                        <input type="text" class="txt" name="phone" />
+                        <p>11位数的手机号</p>
+                    </li>
+                    <li>
+                        <label for="">密码：</label>
+                        <input type="password" class="txt" name="password" />
+                        <p>6-20位字符，可使用字母、数字和符号的组合，不建议使用纯数字、纯字母、纯符号</p>
+                    </li>
+                    <li>
+                        <label for="">确认密码：</label>
+                        <input type="password" class="txt" name="confirm_password" />
+                        <p> <span>请再次输入密码</p>
+                    </li>
+                    <li class="checkcode">
+                        <label for="">验证码：</label>
+                        <input type="text"  name="code" />
+                        <button :class="class1"  @click="countDown" :disabled="disabled">{{content}}</button>
+                    </li>
 
-                    //手机号
-                    var phone  = $("input[name=phone]").val();
+                    <li class="checkcode">
+                        <label for="">邀请码：</label>
+                        <input type="text"  name="invite_code" />
+                    </li>
+                    <li>
+                        <label for="">&nbsp;</label>
+                        <input type="checkbox" class="chb" checked="checked" /> 我已阅读并同意《用户注册协议》
+                    </li>
+                    <li>
+                        <label for="">&nbsp;</label>
+                        <input type="submit" value="" class="login_btn" @click="register"/>
+                    </li>
+                </ul>
+            </form>
 
-                    var password = $("input[name=password]").val();
 
-                    var confirm_password = $("input[name=confirm_password]").val();
+        </div>
 
-                    var parttern = /^1[34578]\d{9}$/;
 
-                    if(phone == ''){
-                        alert('手机号不能为空');
-                        return false;
-                    }
-                    //手机号校验
-                    if(!(parttern.test(phone))){
-                        alert('手机号格式不正确');
-                        return false;
-                    }
 
-                    if(password == ''){
-                        alert('密码不能为空');
-                        return false;
-                    }
+    </div>
+</div>
+<script type="text/javascript" src="/js/vue.js"></script>
+<script type="text/javascript">
+    var register = new Vue({
+        el: "#register",
+        data: {
+            totalTime:60,
+            content: "发送验证码",
+            disabled: false,
+            class1: "button",
+        },
+        methods:{
+            //减少+发送短信验证码
+            countDown() {
 
-                    if(confirm_password != password){
-                        alert('密码不一致');
-                        return false;
-                    }
+                //手机号
+                var phone  = $("input[name=phone]").val();
 
-                    var that = this;
+                var password = $("input[name=password]").val();
 
-                    $.ajax({
-                        url: "http://laravel_web/api/login/sendSms",
-                        type: "post",
-                        data: {phone:phone},
-                        dataType: "json",
-                        success: function(res){
+                var confirm_password = $("input[name=confirm_password]").val();
 
-                            if(res.code == 2000){
-                                that.content = that.totalTime + 's后重新发送' //这里解决60秒不见了的问题
-                                that.disabled = true;
-                                that.class1  = "button disabled";
-                                let clock = window.setInterval(() => {
-                                    that.totalTime--
-                                    that.content = that.totalTime + 's后重新发送'
-                                if (that.totalTime < 0) {     //当倒计时小于0时清除定时器
-                                    window.clearInterval(clock);
-                                    that.content = '发送验证码';
-                                    that.totalTime = 60;
-                                    that.disabled = false;
-                                    that.class1  = "button";
-                                    }
-                                },1000);
-                            }else{
-                                alert(res.msg);
-                                return false;
-                            }
+                var parttern = /^1[34578]\d{9}$/;
 
-                        }
-                    })
-                },
-
-                //注册的功能
-                register: function(){
-                    var phone  = $("input[name=phone]").val();
-
-                    var password = $("input[name=password]").val();
-
-                    var confirm_password = $("input[name=confirm_password]").val();
-                    var code = $("input[name=code]").val();
-                    var invite_code = $("input[name=invite_code]").val();
-
-                    var that = this;
-
-                    $.ajax({
-                        url: "http://laravel_web/api/register",
-                        type: "post",
-                        data: {phone:phone, password:password, code:code, invite_code:invite_code},
-                        dataType: "json",
-                        success: function(res){
-
-                            if(res.code == 2000){
-                                alert('注册成功');
-                            }else{
-                                alert(res.msg);
-                                return false;
-                            }
-
-                        }
-                    })
+                if(phone == ''){
+                    alert('手机号不能为空');
+                    return false;
                 }
+                //手机号校验
+                if(!(parttern.test(phone))){
+                    alert('手机号格式不正确');
+                    return false;
+                }
+
+                if(password == ''){
+                    alert('密码不能为空');
+                    return false;
+                }
+
+                if(confirm_password != password){
+                    alert('密码不一致');
+                    return false;
+                }
+
+                var that = this;
+
+                $.ajax({
+                    url: "http://laravel_web/api/login/sendSms",
+                    type: "post",
+                    data: {phone:phone},
+                    dataType: "json",
+                    success: function(res){
+
+                        if(res.code == 2000){
+                            that.content = that.totalTime + 's后重新发送' //这里解决60秒不见了的问题
+                            that.disabled = true;
+                            that.class1  = "button disabled";
+                            let clock = window.setInterval(() => {
+                                that.totalTime--
+                                that.content = that.totalTime + 's后重新发送'
+                                if (that.totalTime < 0) {     //当倒计时小于0时清除定时器
+                                window.clearInterval(clock);
+                                that.content = '发送验证码';
+                                that.totalTime = 60;
+                                that.disabled = false;
+                                that.class1  = "button";
+                            }
+                        },1000);
+                        }else{
+                            alert(res.msg);
+                            return false;
+                        }
+
+                    }
+                })
+            },
+
+            //注册的功能
+            register: function(){
+                var phone  = $("input[name=phone]").val();
+
+                var password = $("input[name=password]").val();
+
+                var confirm_password = $("input[name=confirm_password]").val();
+                var code = $("input[name=code]").val();
+                var invite_code = $("input[name=invite_code]").val();
+
+                var that = this;
+
+                $.ajax({
+                    url: "http://aravel_web/api/register",
+                    type: "post",
+                    data: {phone:phone, password:password, code:code, invite_code:invite_code},
+                    dataType: "json",
+                    success: function(res){
+
+                        if(res.code == 2000){
+                            alert('注册成功');
+                        }else{
+                            alert(res.msg);
+                            return false;
+                        }
+
+                    }
+                })
             }
-        })
-    </script>
+        }
+    })
+</script>
 {/block}

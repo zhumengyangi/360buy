@@ -1,0 +1,60 @@
+{extend name="common"}
+{block name='title'} 收货地址{/block}
+{block name="content"}
+<link rel="stylesheet" href="/style/user.css" type="text/css">
+<link rel="stylesheet" href="/style/home.css" type="text/css">
+<script type="text/javascript" src="/js/home.js"></script>
+<div style="clear:both;"></div>
+
+<!-- 页面主体 start -->
+<div class="main w1210 bc mt10">
+    <div class="crumb w1210">
+        <h2><strong>{$userinfo.username} </strong><span>> 收货地址 </span></h2>
+    </div>
+
+    {include file="user/menu"}
+
+    <!-- 右侧内容区域 start -->
+    <div class="content fl ml10">
+        <div class="user_hd">
+            <h3>收货地址</h3>
+        </div>
+        <br>
+        <button onclick="javascript:location.href='/index/user/address'">添加地址</button>
+        <div class="user_bd mt10">
+            <table style="width: 80%;text-align: center;" cellspacing="0" border="1" align="left">
+                <thead style="font-weight: bold;">
+                <td>地址名字</td>
+                <td>收货人</td>
+                <td>手机号</td>
+                <td>编码</td>
+                <td>地址</td>
+                <td>操作</td>
+                </thead>
+                <tbody>
+                    {if condition="!empty($address)"}
+                        {foreach $address as $a}
+                            <tr>
+                                <td>{$a.address_name}</td>
+                                <td>{$a.consignee}</td>
+                                <td>{$a.mobile}</td>
+                                <td>{$a.zipcode}</td>
+                                <td>{$a.country} {$a.province} {$a.city} {$a.district} {$a.address}</td>
+                                <td>
+                                    {if condition="$a.id != $userinfo.address_id"}
+                                        <a href="/index/user/setDefaultAddress?id={$a.id}">默认</a>
+                                    {/if}
+                                    <a href="">删除</a>
+                                </td>
+                            </tr>
+                        {/foreach}
+                    {/if}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <!-- 右侧内容区域 end -->
+</div>
+<!-- 页面主体 end-->
+
+{/block}

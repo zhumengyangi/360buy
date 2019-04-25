@@ -1,0 +1,76 @@
+{extend name="common"}
+{block name='title'} 用户详情{/block}
+{block name="content"}
+<link rel="stylesheet" href="/style/user.css" type="text/css">
+<link rel="stylesheet" href="/style/home.css" type="text/css">
+<script type="text/javascript" src="/js/home.js"></script>
+<div style="clear:both;"></div>
+
+<!-- 页面主体 start -->
+<div class="main w1210 bc mt10">
+    <div class="crumb w1210">
+        <h2><strong>{$userinfo.username} </strong><span>> 账户信息</span></h2>
+    </div>
+
+    {include file="user/menu"}
+
+    <!-- 右侧内容区域 start -->
+    <div class="content fl ml10">
+        <div class="user_hd">
+            <h3>账户信息</h3>
+        </div>
+
+        <div class="user_bd mt10">
+            <form action="/index/user/saveUser" method="post">
+                <input type="hidden" name="id" value="{$user.user_id}">
+                <ul>
+                    <li>
+                        <label for="">手机号：</label>
+                        <input type="text" class="txt" value="{$user.phone}" disabled="" />
+                    </li>
+                    <li>
+                        <label for="">用户名：</label>
+                        <input type="text" class="txt" name="username" value="{$user.username}"/>
+                    </li>
+                    <li>
+                        <label for="">积分：</label>
+                        <input type="text" class="txt" name="score" value="{$user.score}" disabled="" />
+                    </li>
+                    <li>
+                        <label for="">账户余额：</label>
+                        <input type="text" class="txt" name="balance" value="{$user.balance}" disabled="" />
+                    </li>
+                    <li>
+                        <label for="">邮箱：</label>
+                        <input type="text" class="txt" name="email" value="{$user.email}"/>
+                    </li>
+                    <li>
+                        <label for="">性别：</label>
+                        <input type="radio"  name="sex" value="1" {if condition="$user['sex'] == 1"} checked=""{/if} />&nbsp;男&nbsp;&nbsp;&nbsp;
+                        <input type="radio" name="sex" value="2" {if condition="$user['sex'] == 2"} checked=""{/if}/>&nbsp;女
+                    </li>
+                    <li>
+                        <label for="">联系人：</label>
+                        <input type="text" class="txt" name="link_name" value="{$user.link_name}"/>
+                    </li>
+                    <li>
+                        <label for="">联系人手机：</label>
+                        <input type="text" class="txt" name="link_phone" value="{$user.link_phone}"/>
+                    </li>
+                    <li>
+                        <label for="">邀请码：</label>
+                        <input type="text" class="txt" value="{$user.invite_code}" disabled="" />
+                    </li>
+                    <li>
+                        <label for="">&nbsp;</label>
+                        <input type="submit" value="提交" class="sbtn" />
+                    </li>
+                </ul>
+            </form>
+        </div>
+    </div>
+    <!-- 右侧内容区域 end -->
+</div>
+<!-- 页面主体 end-->
+
+{/block}

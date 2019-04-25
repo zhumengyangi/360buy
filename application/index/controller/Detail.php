@@ -24,7 +24,7 @@ class Detail extends Controller
         $category = httpCurl($url."/api/home/category",'post');
 
         //  品牌列表
-        $brands = httpCurl($url."/api/home/category",'post',['num' => 9]);
+        $brands = httpCurl($url."/api/home/brands",'post',['nums' => 9]);
 
         //  商品详情信息接口
         $goods = httpCurl($url."/api/goods/detail".$params['id'],'post');
@@ -32,10 +32,10 @@ class Detail extends Controller
         $this->assign([
             'category' => $category['data'],
             'brands' => $brands['data'],
-            'goods' => $goods['data'],
-            'gallery' => $goods['data'],
-            'spu' => $goods['data'],
-            'sku' => $goods['data'],
+            'goods' => $goods['data']['goods'],
+            'gallery' => $goods['data']['gallery'],
+            'spu' => $goods['data']['spu'],
+            'sku' => $goods['data']['sku'],
         ]);
 
         return $this->fetch('index');

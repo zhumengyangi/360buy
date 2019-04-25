@@ -1,0 +1,58 @@
+{extend name="common"}
+{block name='title'} 用户红包{/block}
+{block name="content"}
+<link rel="stylesheet" href="/style/user.css" type="text/css">
+<link rel="stylesheet" href="/style/home.css" type="text/css">
+<script type="text/javascript" src="/js/home.js"></script>
+<div style="clear:both;"></div>
+
+<!-- 页面主体 start -->
+<div class="main w1210 bc mt10">
+    <div class="crumb w1210">
+        <h2><strong>{$userinfo.username} </strong><span>> 红包记录 </span></h2>
+    </div>
+
+    {include file="user/menu"}
+
+    <!-- 右侧内容区域 start -->
+    <div class="content fl ml10">
+        <div class="user_hd">
+            <h3>红包记录</h3>
+        </div>
+
+        <div class="user_bd mt10">
+            <table style="width: 80%;text-align: center;" cellspacing="0" border="1" align="left">
+                <thead style="font-weight: bold;">
+                <td>红包名称</td>
+                <td>红包金额</td>
+                <td>开始时间</td>
+                <td>结束时间</td>
+                <td>最小使用金额</td>
+                <td>状态</td>
+                </thead>
+                <tbody>
+                    {if condition="!empty($user_bonus)"}
+                        {foreach $user_bonus as $bonus}
+                            <tr>
+                                <td>{$bonus.bonus_name}</td>
+                                <td>{$bonus.money}</td>
+                                <td>{$bonus.start_time}</td>
+                                <td>{$bonus.end_time}</td>
+                                <td>{$bonus.min_money}</td>
+                                <td>
+                                    {if condition="$bonus.status == 1"}未使用{/if}
+                                    {if condition="$bonus.status == 2"}已使用{/if}
+                                    {if condition="$bonus.status == 3"}已过期{/if}
+                                </td>
+                            </tr>
+                        {/foreach}
+                    {/if}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <!-- 右侧内容区域 end -->
+</div>
+<!-- 页面主体 end-->
+
+{/block}

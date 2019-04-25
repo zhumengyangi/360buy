@@ -1,0 +1,159 @@
+{extend name="common"}
+{block name='title'} 新增收货地址{/block}
+{block name="content"}
+<link rel="stylesheet" href="/style/user.css" type="text/css">
+<link rel="stylesheet" href="/style/home.css" type="text/css">
+<script type="text/javascript" src="/js/home.js"></script>
+<div style="clear:both;"></div>
+
+<!-- 页面主体 start -->
+<div class="main w1210 bc mt10">
+    <div class="crumb w1210">
+        <h2><strong>{$userinfo.username} </strong><span>> 收货地址</span></h2>
+    </div>
+
+    {include file="user/menu"}
+
+    <!-- 右侧内容区域 start -->
+    <div class="content fl ml10" id="address">
+        <div class="user_hd">
+            <h3>收货地址</h3>
+        </div>
+
+        <div class="user_bd mt10">
+            <form action="/index/user/saveAddress" method="post">
+                <input type="hidden" name="user_id" value="{$user.user_id}">
+                <ul>
+                    <li>
+                        <label for="">地址名称：</label>
+
+                        <input type="text" class="txt" name="address_name" value="" />
+                    </li>
+                    <li>
+                        <label for="">收货人：</label>
+                        <input type="text" class="txt" name="consignee" value=""/>
+                    </li>
+                    <li>
+                        <label for="">手机号：</label>
+                        <input type="text" class="txt" name="mobile" value=""/>
+                    </li>
+                    <li>
+                        <label for="">地址：</label>
+                        <select name="country" class="txt" style="width: 80px;">
+                            <option value="1">中国</option>
+                        </select>
+                        <select name="province" class="txt" style="width: 120px;" @click="getCity">
+                            <option v-for="p in province" :value="p.id">{{p.region_name}}</option>
+                        </select>
+                        <select name="city" class="txt" style="width: 120px;" @click="getDistrict">
+
+                            <option v-for="c in city" :value="c.id"> {{c.region_name}}</option>
+                        </select>
+                        <select name="district" class="txt" style="width: 120px;">
+
+                            <option v-for="d in district" :value="d.id">  {{d.region_name}}</option>
+                        </select>
+                    </li>
+                    <li>
+                        <label for="">详细地址：</label>
+                        <input type="text" class="txt" name="address" value="" />
+                    </li>
+                    <li>
+                        <label for="">邮政编码：</label>
+                        <input type="text" class="txt" name="zipcode" value=""/>
+                    </li>
+                    <li>
+                        <label for="">&nbsp;</label>
+                        <input type="submit" value="提交" class="sbtn" />
+                    </li>
+                </ul>
+            </form>
+        </div>
+    </div>
+    <!-- 右侧内容区域 end -->
+</div>
+<!-- 页面主体 end-->
+
+<script type="text/javascript" src="/js/vue.js"></script>
+
+<script type="text/javascript">
+    var address = new Vue({
+        el: "#address",
+        data:{
+            country: "",
+            province: "",
+            city: "",
+            district: ""
+        },
+
+        created: function(){
+            this.getProvince();
+        },
+
+        methods: {
+            //获取省份地址信息
+            getProvince: function(fid=1){
+                var that = this;
+
+                $.ajax({
+                    url: "http://laravel_web/api/user/region/"+fid,
+                    type: "post",
+                    data: {},
+                    dataType: "json",
+                    success: function(res){
+
+                        if(res.code == 2000){
+                            that.province = res.data;
+                        }
+
+                    }
+                })
+            },
+
+            //获取城市地址信息
+            getCity: function(event){
+
+                var that = this;
+                var fid = event.target.value;
+
+                $.ajax({
+                    url: "http://laravel_web/api/user/region/"+fid,
+                    type: "post",
+                    data: {},
+                    dataType: "json",
+                    success: function(res){
+
+                        if(res.code == 2000){
+                            that.city = res.data;
+                        }
+
+                    }
+                })
+            },
+
+            //获取地区信息
+            getDistrict: function(event){
+
+                var that = this;
+                var fid = event.target.value;
+
+                $.ajax({
+                    url: "http://laravel_web/api/user/region/"+fid,
+                    type: "post",
+                    data: {},
+                    dataType: "json",
+                    success: function(res){
+
+                        if(res.code == 2000){
+                            that.district = res.data;
+                        }
+
+                    }
+                })
+            }
+
+        }
+    })
+</script>
+
+{/block}
