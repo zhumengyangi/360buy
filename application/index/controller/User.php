@@ -29,23 +29,6 @@ class User extends Controller
             return $this->redirect('index/login/login');
         }
 
-        /*      验证用户是否登录        */
-        //  请求token信息验证信息
-        //$token = isset($_COOKIE['360_token']) ? $_COOKIE['360_token'] : "";
-        /*if(empty($token)){
-            return $this->redirect('index/login/login');
-        }*/
-        //  验证token的接口
-        //$userInfo = httpCurl($this->url."/api/token","post",['token'=>$token]);
-
-        //  如果没有的话则返回登录页面
-        /*if(!isset($userInfo['data']) || empty($userInfo['data'])){
-            return $this->redirect('/index/login/login');
-        }*/
-
-        //  返回数据
-        //$this->userInfo = $userInfo['data'];
-
     }
 
     /**
@@ -144,7 +127,7 @@ class User extends Controller
         $bonus = httpCurl($this->url."/api/user/bonus/".$userId, "post");
 
         //  返回数据
-        $this->assig([
+        $this->assign([
             'user_bonus' => $bonus['data']
         ]);
 
@@ -168,7 +151,7 @@ class User extends Controller
         $fund = httpCurl($this->url."/api/user/fund/".$userId, "post");
 
         //  返回数据
-        $this->assig([
+        $this->assign([
             'fund_history' => $fund['data']
         ]);
 
@@ -192,7 +175,7 @@ class User extends Controller
         $address = httpCurl($this->url."/api/user/address/list/".$userId, "post");
 
         //  返回数据
-        $this->assig([
+        $this->assign([
             'address' => $address['data']
         ]);
 
@@ -216,7 +199,7 @@ class User extends Controller
         $data = httpCurl($this->url."/api/user/info/".$userId, "post");
 
         //  返回数据
-        $this->assig([
+        $this->assign([
             'user' => $data['data']
         ]);
 

@@ -1,0 +1,179 @@
+{extend name="common"}
+{block name="title"} 填写订单核对信息{/block}
+
+{block name="content"}
+<link rel="stylesheet" href="/style/fillin.css" type="text/css">
+<script type="text/javascript" src="/js/cart2.js"></script>
+
+
+<!-- 主体部分 start -->
+<form action="/index/goods/submitOrder" method="post" id="submitOrder">
+    <input type="hidden" name="user_id" value="{$userinfo.id}">
+    <div class="fillin w990 bc mt15">
+        <div class="fillin_hd">
+            <h2>填写并核对订单信息</h2>
+        </div>
+
+        <div class="fillin_bd">
+            <!-- 收货人信息  start-->
+            <div class="address">
+                <h3>收货人信息 <a href="javascript:;" id="address_modify">[显示]</a></h3>
+
+                <div class="address_select none">
+                    <ul>
+                        {foreach $address as $ad}
+                        <li>
+                            <input type="radio" name="address" {if condition="$userinfo.address_id == $ad.id"} checked="checked" {/if}/ value='{$ad.id}'>{$ad.consignee} {$ad.province} {$ad.city} {$ad.district} {$ad.address} {$ad.mobile}
+                        </li>
+                        {/foreach}
+                    </ul>
+                </div>
+            </div>
+            <!-- 收货人信息  end-->
+
+            <!-- 配送方式 start -->
+            <div class="delivery">
+                <h3>送货方式 <a href="javascript:;" id="delivery_modify">[显示]</a></h3>
+
+                <div class="delivery_select none">
+                    <table>
+                        <thead>
+                        <tr>
+                            <th class="col1">送货方式</th>
+                            <th class="col2">运费</th>
+                            <th class="col3">备注信息</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {foreach $shipping as $sp}
+                        <tr>
+                            <td><input type="radio" name="shipping" value="{$sp.shipping_name}" />{$sp.shipping_name}</td>
+                            <td>￥{$sp.fee}</td>
+                            <td>{$sp.shipping_desc}</td>
+                        </tr>
+                        {/foreach}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <!-- 配送方式 end -->
+
+            <!-- 支付方式  start-->
+            <div class="pay">
+                <h3>支付方式 <a href="javascript:;" id="pay_modify">[显示]</a></h3>
+
+                <div class="pay_select none">
+                    <table>
+                        {foreach $payment as $py}
+                        <tr>
+                            <td class="col1"><input type="radio" name="payment" value="{$py.pay_name}" />{$py.pay_name}</td>
+                            <td class="col2">{$py.pay_desc}</td>
+                        </tr>
+                        {/foreach}
+                    </table>
+                </div>
+            </div>
+            <!-- 支付方式  end-->
+
+            <!-- 支付方式  start-->
+            <div class="pay">
+                <h3>备注信息
+
+                    <div class="pay_select">
+                        <table>
+                            <tr>
+                                <td class="col1">备注</td>
+                                <td class="col2"><textarea name="note"></textarea></td>
+                            </tr>
+                        </table>
+                    </div>
+            </div>
+            <!-- 支付方式  end-->
+
+            <!-- 商品清单 start -->
+
+            <div class="goods">
+                <h3>商品清单</h3>
+                <table>
+                    <thead>
+                    <tr>
+                        <th class="col1">商品</th>
+                        <th class="col2">规格</th>
+                        <th class="col3">价格</th>
+                        <th class="col4">数量</th>
+                        <th class="col5">小计</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {foreach $goods_cart as $goods}
+                    <tr>
+                        <td class="col1"><a href=""><img src="{$goods.goods_img}" alt="" /></a>  <strong><a href="">{$goods.goods_name}</a></strong></td>
+                        <td class="col2">
+                            {foreach $goods.attr_sku as $sku}
+                            <p>{$sku.attr_name}：{$sku.sku_value}</p>
+                            {/foreach}
+                        </td>
+                        <td class="col3">￥{$goods.market_price}</td>
+                        <td class="col4"> {$goods.nums}</td>
+                        <td class="col5"><span>￥{$goods.nums*$goods.market_price|number_format=2}</span></td>
+                    </tr>
+                    {/foreach}
+                    </tbody>
+                    <tfoot>
+                    <tr>
+                        <td colspan="5">
+                            <ul>
+                                <li>
+                                    <span>{$total_nums} 件商品，总商品金额：</span>
+                                    <em>￥{$total_amount}</em>
+                                </li>
+                                <li>
+                                    <span>返现：</span>
+                                    <em>-￥240.00</em>
+                                </li>
+                                <li>
+                                    <span>运费：</span>
+                                    <em>￥10.00</em>
+                                </li>
+                                <li>
+                                    <span>应付总额：</span>
+                                    <em>￥{$total_amount+10}</em>
+                                </li>
+                            </ul>
+                        </td>
+                    </tr>
+                    </tfoot>
+                </table>
+                <input type="hidden" name="goods_price" value="{$total_amount}">
+                <input type="hidden" name="shipping_fee" value="10">
+                <input type="hidden" name="pay_price" value="{$total_amount+10}">
+                <input type="hidden" name="bonus_price" value="0">
+                <input type="hidden" name="goods_info" value='{$goods_cart|json_encode}'>
+            </div>
+            <!-- 商品清单 end -->
+
+        </div>
+
+        <div class="fillin_ft">
+            <a href="javascript:;" onclick="submitOrders()"><span>提交订单</span></a>
+            <p>应付总额：<strong>￥{$total_amount+10}元</strong></p>
+
+        </div>
+    </div>
+</form>
+<!-- 主体部分 end -->
+<script type="text/javascript">
+    //提交表单信息
+    function submitOrders(){
+
+        var shipping = $("input:radio[name=shipping]:checked").val();
+        var payment = $("input:radio[name=payment]:checked").val();
+
+        if(shipping == '' || payment==''){
+            alert('配送方式或支付方式不能为空');
+            return false;
+        }
+        $("#submitOrder").submit();
+    }
+</script>
+{/block}

@@ -1,0 +1,56 @@
+{extend name="common"}
+{block name="title"}购物车页面{/block}
+
+{block name="content"}
+<link rel="stylesheet" href="/style/cart.css" type="text/css">
+<script type="text/javascript" src="/js/cart1.js"></script>
+<!-- 主体部分 start -->
+<div class="mycart w990 mt10 bc">
+    <h2><span>我的购物车</span></h2>
+    <table>
+        <thead>
+        <tr>
+            <th class="col1">商品名称</th>
+            <th class="col2">商品信息</th>
+            <th class="col3">单价</th>
+            <th class="col4">数量</th>
+            <th class="col5">小计</th>
+            <th class="col6">操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        {if condition="!empty($goods_cart)"}
+        {foreach $goods_cart as $key => $cart}
+        <tr>
+            <td class="col1"><a href=""><img src="{$cart.goods_img}" alt="" /></a>  <strong><a href="">{$cart.goods_name}</a></strong></td>
+            <td class="col2">
+                {foreach $cart.attr_sku as $sku}
+                <p>{$sku.attr_name}：{$sku.sku_value}</p>
+                {/foreach}
+
+            </td>
+            <td class="col3">￥<span>{$cart.market_price}</span></td>
+            <td class="col4">
+                <a href="javascript:;" class="reduce_num"></a>
+                <input type="text" name="amount" value="{$cart.nums}" class="amount"/>
+                <a href="javascript:;" class="add_num"></a>
+            </td>
+            <td class="col5">￥<span>{$cart.nums*$cart.market_price|number_format=2}</span></td>
+            <td class="col6"><a href="/index/goods/delCart?key={$key}">删除</a></td>
+        </tr>
+        {/foreach}
+        {/if}
+        </tbody>
+        <tfoot>
+        <tr>
+            <td colspan="6">购物金额总计： <strong>￥ <span id="total">{$total_amount}</span></strong></td>
+        </tr>
+        </tfoot>
+    </table>
+    <div class="cart_btn w990 bc mt10">
+        <a href="/" class="continue">继续购物</a>
+        <a href="/index/goods/order" class="checkout">结 算</a>
+    </div>
+</div>
+<!-- 主体部分 end -->
+{/block}
